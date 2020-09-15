@@ -49,8 +49,8 @@ class GameTest(unittest.TestCase):
     def tearDown(self):
         print("tear down")
 
-if __name__ == "__main__":
-    suite=unittest.TestSuite
+if __name__ == '__main__':
+    suite=unittest.TestSuite()
     suite.addTest(GameTest("test_getneighbor"))
     suite.addTest(GameTest("test_change_status"))
     suite.addTest(GameTest("test_next_phrase"))
