@@ -29,10 +29,14 @@ class GUI :
         self.screen.blit(self.drawText("random"), (490, 20))
 
     def drawText(self,content):
-        pygame.font.init()
-        font = pygame.font.Font(None, 30)
-        text_sf = font.render(content, True, pygame.Color(0, 0, 0), pygame.Color(255, 255, 255))
-        return text_sf
+        try:
+            pygame.font.init()
+            font = pygame.font.Font(None, 30)
+            text_sf = font.render(content, True, pygame.Color(0, 0, 0), pygame.Color(255, 255, 255))
+            return text_sf
+        except Exception as e:
+            print(e)
+            return 0
 
 
     def show(self):

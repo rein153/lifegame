@@ -9,6 +9,7 @@ class GameTest(unittest.TestCase):
     def setUp(self):
         print("start test")
 
+
     def test_start(self):
         gui = GUI(10,10)
         self.assertEqual(gui.start(),1,"error")
@@ -16,6 +17,17 @@ class GameTest(unittest.TestCase):
     def test_pause(self):
         gui = GUI(10,10)
         self.assertEqual(gui.pause(),0,"error")
+
+    def test_resetgui(self):
+        gui = GUI(10,10)
+        for i in range(10):
+            for j in range(10):
+                self.assertEqual(gui.frame.GameMap[i][j],0,"error")
+
+    def test_drawText(self):
+        gui = GUI(10,10)
+        self.assertNotEqual(gui.drawText(""),0,"error")
+
 
     def test_getneighbor(self):
         mainframe=MainFrame(100,100)
@@ -55,7 +67,7 @@ if __name__ == '__main__':
     suite.addTest(GameTest("test_change_status"))
     suite.addTest(GameTest("test_next_phrase"))
     suite.addTest(GameTest("test_reset"))
-
+    suite.addTest(GameTest("test_resetgui"))
 
     runner=unittest.TextTestRunner()
     runner.run(suite)
