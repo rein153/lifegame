@@ -5,18 +5,21 @@ from GUI import GUI
 
 class GameTest(unittest.TestCase):
 
+    # 开始测试标志
     def setUp(self):
         print("start test")
 
-
+    # 测试游戏开始
     def test_start(self):
         gui = GUI(10,10)
         self.assertEqual(gui.start(),1,"error")
 
+    # 测试游戏暂停
     def test_pause(self):
         gui = GUI(10,10)
         self.assertEqual(gui.pause(),0,"error")
 
+    # 测试GUI界面重置
     def test_resetgui(self):
         gui = GUI(10,10)
         for i in range(10):
@@ -27,11 +30,7 @@ class GameTest(unittest.TestCase):
             for j in range(10):
                 self.assertEqual(gui.frame.GameMap[i][j],0,"error")
 
-    def test_drawText(self):
-        gui = GUI(10,10)
-        self.assertNotEqual(gui.drawText(""),0,"error")
-
-
+    # 测试获取单个细胞周围存活细胞数
     def test_getneighbor(self):
         mainframe=MainFrame(100,100)
         mainframe.GameMap[0][0] = 1
@@ -67,6 +66,7 @@ class GameTest(unittest.TestCase):
         mainframe.GameMap[2][2] = 0
         self.assertEqual(mainframe.get_neighbor(1, 1), 0, "error")
 
+    # 测试改变单个细胞状态
     def test_change_status(self):
         mainframe = MainFrame(100, 100)
         mainframe.GameMap[0][0] = 1
@@ -115,6 +115,19 @@ class GameTest(unittest.TestCase):
         mainframe.change_status(1, 1)
         self.assertEqual(mainframe.NextMap[1][1], 0, "error")  # 不变
 
+        # 边界测试
+        mainframe.GameMap[99][99] = 1
+        mainframe.GameMap[0][99] = 0
+        mainframe.GameMap[1][99] = 0
+        mainframe.GameMap[99][0] = 1
+        mainframe.GameMap[1][0] = 0
+        mainframe.GameMap[99][1] = 0
+        mainframe.GameMap[0][1] = 1
+        mainframe.GameMap[1][1] = 0
+        mainframe.change_status(0,0)
+        self.assertEqual(mainframe.NextMap[0][0], 1, "error")  # 不变
+
+    # 测试全部细胞状态更新
     def test_next_phrase(self):
         mainframe = MainFrame(100,100)
         mainframe.GameMap[0][0] = 1
@@ -141,14 +154,15 @@ class GameTest(unittest.TestCase):
         mainframe.next_phrase()
         self.assertEqual(mainframe.GameMap[98][98], 0, "error")
 
+    # 将所有单元格置为1，检测清空函数是否正常进行。如果正常运行，则应该数组全为0
     def test_reset(self):
         mainframe = MainFrame(100, 100)
-        for i in range(50):
-            for j in range(50):
+        for i in range(100):
+            for j in range(100):
                 mainframe.GameMap[0][0] = 1
         mainframe.reset()
-        for i in range(50):
-            for j in range(50):
+        for i in range(100):
+            for j in range(100):
                 self.assertEqual(mainframe.GameMap[i][j], 0, "error")
 
 
@@ -159,14 +173,13 @@ class GameTest(unittest.TestCase):
 if __name__ == '__main__':
     suite=unittest.TestSuite()
 
-    suite.addTest(GameTest("test_start"))
-    suite.addTest(GameTest("test_pause"))
-    suite.addTest(GameTest("test_getneighbor"))
-    suite.addTest(GameTest("test_change_status"))
-    suite.addTest(GameTest("test_next_phrase"))
-    suite.addTest(GameTest("test_reset"))
-    suite.addTest(GameTest("test_resetgui"))
-    suite.addTest(GameTest("test_drawText"))
+    suite.addTest(GameTest("test_start"))#测试游戏开始
+    suite.addTest(GameTest("test_pause"))#测试游戏暂停
+    suite.addTest(GameTest("test_getneighbor"))#测试 获取该方格周边存活数量
+    suite.addTest(GameTest("test_change_status"))#测试 改变该方格存活状态
+    suite.addTest(GameTest("test_next_phrase"))#测试 改变全部方格状态
+    suite.addTest(GameTest("test_reset")) #测试 重置内部数组
+    suite.addTest(GameTest("test_resetgui"))#测试 重置棋盘
 
     runner=unittest.TextTestRunner()
     runner.run(suite)
