@@ -128,6 +128,7 @@ class GameTest(unittest.TestCase):
         mainframe.next_phrase()
         self.assertEqual(mainframe.GameMap[0][0], 1, "error")
         self.assertEqual(mainframe.GameMap[1][1], 0, "error")
+        self.assertEqual(mainframe.GameMap[99][1], 1, "error")
 
         mainframe.GameMap[97][97] = 1
         mainframe.GameMap[97][98] = 1
