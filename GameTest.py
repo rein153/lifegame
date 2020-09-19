@@ -31,30 +31,86 @@ class GameTest(unittest.TestCase):
 
     def test_getneighbor(self):
         mainframe=MainFrame(100,100)
-        mainframe.GameMap[0][0]=1
-        self.assertEqual(mainframe.get_neighbor(0,0),0,"error")
-        self.assertEqual(mainframe.get_neighbor(0,1),1,"error")
+        mainframe.GameMap[0][0] = 1
+        mainframe.GameMap[0][1] = 1
+        mainframe.GameMap[0][2] = 1
+        mainframe.GameMap[1][0] = 1
+        mainframe.GameMap[1][2] = 1
+        mainframe.GameMap[2][0] = 1
+        mainframe.GameMap[2][1] = 1
+        mainframe.GameMap[2][2] = 1
+        self.assertEqual(mainframe.get_neighbor(1,1),8,"error")
 
     def test_change_status(self):
         mainframe = MainFrame(100, 100)
         mainframe.GameMap[0][0] = 1
-        mainframe.change_status(0,0)
-        self.assertEqual(mainframe.NextMap[0][0],0,"error")
-        self.assertEqual(mainframe.NextMap[0][1],0,"error")
+        mainframe.GameMap[0][1] = 1
+        mainframe.GameMap[0][2] = 1
+        mainframe.GameMap[1][0] = 1
+        mainframe.GameMap[1][2] = 1
+        mainframe.GameMap[2][0] = 1
+        mainframe.GameMap[2][1] = 1
+        mainframe.GameMap[2][2] = 1
+        mainframe.change_status(1, 1)
+        self.assertEqual(mainframe.NextMap[1][1], 0, "error")#死亡
+
+        mainframe.GameMap[0][0] = 1
+        mainframe.GameMap[0][1] = 1
+        mainframe.GameMap[0][2] = 0
+        mainframe.GameMap[1][0] = 1
+        mainframe.GameMap[1][2] = 0
+        mainframe.GameMap[2][0] = 0
+        mainframe.GameMap[2][1] = 0
+        mainframe.GameMap[2][2] = 0
+        mainframe.change_status(1, 1)
+        self.assertEqual(mainframe.NextMap[1][1], 1, "error")#一定活
+
+        mainframe.GameMap[0][0] = 1
+        mainframe.GameMap[0][1] = 0
+        mainframe.GameMap[0][2] = 0
+        mainframe.GameMap[1][0] = 1
+        mainframe.GameMap[1][2] = 0
+        mainframe.GameMap[2][0] = 0
+        mainframe.GameMap[2][1] = 0
+        mainframe.GameMap[2][2] = 0
+        mainframe.GameMap[1][1] = 1
+        mainframe.change_status(1, 1)
+        self.assertEqual(mainframe.NextMap[1][1], 1, "error")#不变
 
     def test_next_phrase(self):
         mainframe = MainFrame(100,100)
         mainframe.GameMap[0][0] = 1
+        mainframe.GameMap[0][1] = 1
+        mainframe.GameMap[0][2] = 1
+        mainframe.GameMap[1][0] = 1
+        mainframe.GameMap[1][2] = 1
+        mainframe.GameMap[2][0] = 1
+        mainframe.GameMap[2][1] = 1
+        mainframe.GameMap[2][2] = 1
         mainframe.next_phrase()
-        self.assertEqual(mainframe.GameMap[0][0], 0, "error")
-        self.assertEqual(mainframe.GameMap[0][1], 0, "error")
+        self.assertEqual(mainframe.GameMap[0][0], 1, "error")
+        self.assertEqual(mainframe.GameMap[1][1], 0, "error")
+
+        mainframe.GameMap[97][97] = 1
+        mainframe.GameMap[97][98] = 1
+        mainframe.GameMap[97][99] = 1
+        mainframe.GameMap[98][97] = 0
+        mainframe.GameMap[98][98] = 1
+        mainframe.GameMap[98][99] = 0
+        mainframe.GameMap[99][97] = 0
+        mainframe.GameMap[99][98] = 1
+        mainframe.next_phrase()
+        self.assertEqual(mainframe.GameMap[98][98], 0, "error")
 
     def test_reset(self):
         mainframe = MainFrame(100, 100)
-        mainframe.GameMap[0][0] = 1
+        for i in range(50):
+            for j in range(50):
+                mainframe.GameMap[0][0] = 1
         mainframe.reset()
-        self.assertEqual(mainframe.GameMap[0][0], 0, "error")
-        self.assertEqual(mainframe.GameMap[0][1], 0, "error")
+        for i in range(50):
+            for j in range(50):
+                self.assertEqual(mainframe.GameMap[i][j], 0, "error")
 
 
 
@@ -63,11 +119,15 @@ class GameTest(unittest.TestCase):
 
 if __name__ == '__main__':
     suite=unittest.TestSuite()
+
+    suite.addTest(GameTest("test_start"))
+    suite.addTest(GameTest("test_pause"))
     suite.addTest(GameTest("test_getneighbor"))
     suite.addTest(GameTest("test_change_status"))
     suite.addTest(GameTest("test_next_phrase"))
     suite.addTest(GameTest("test_reset"))
     suite.addTest(GameTest("test_resetgui"))
+    suite.addTest(GameTest("test_drawText"))
 
     runner=unittest.TextTestRunner()
     runner.run(suite)
