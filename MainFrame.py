@@ -48,7 +48,7 @@ class MainFrame :
             for j in range(self.Column):
                 self.GameMap[i][j] = 0
 
-    def show_cmd(self):
+'''   def show_cmd(self):
         for tmp in range(1000):
             os.system("cls")
             for i in range(self.Row):
@@ -59,7 +59,7 @@ class MainFrame :
                         print("□", end="")
                 print("")
             time.sleep(0.5)
-            self.next_phrase()
+            self.next_phrase()'''
 
 
 # frame = MainFrame(30,30)

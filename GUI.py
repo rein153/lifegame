@@ -27,6 +27,8 @@ class GUI :
         self.screen.blit(self.drawText("pause"), (200, 20))
         self.screen.blit(self.drawText("reset"), (350, 20))
         self.screen.blit(self.drawText("random"), (490, 20))
+        print(pygame.display.Info())
+        print(self.screen.get_rect())
 
     def drawText(self,content):
         try:
