@@ -1,5 +1,4 @@
 import unittest
-from unittest import mock
 from MainFrame import MainFrame
 from GUI import GUI
 
@@ -22,6 +21,10 @@ class GameTest(unittest.TestCase):
         gui = GUI(10,10)
         for i in range(10):
             for j in range(10):
+                gui.frame.GameMap[i][j] = 1
+        gui.reset()
+        for i in range(10):
+            for j in range(10):
                 self.assertEqual(gui.frame.GameMap[i][j],0,"error")
 
     def test_drawText(self):
@@ -35,11 +38,34 @@ class GameTest(unittest.TestCase):
         mainframe.GameMap[0][1] = 1
         mainframe.GameMap[0][2] = 1
         mainframe.GameMap[1][0] = 1
+        mainframe.GameMap[1][1] = 1
         mainframe.GameMap[1][2] = 1
         mainframe.GameMap[2][0] = 1
         mainframe.GameMap[2][1] = 1
         mainframe.GameMap[2][2] = 1
+        #本格子以及周围格子设置为1
         self.assertEqual(mainframe.get_neighbor(1,1),8,"error")
+        #检测周围或者数量是否为8
+
+        mainframe.GameMap[0][0] = 0
+        self.assertEqual(mainframe.get_neighbor(1, 1), 7, "error")
+        #逐渐递减
+        mainframe.GameMap[0][1] = 0
+        self.assertEqual(mainframe.get_neighbor(1, 1), 6, "error")
+        mainframe.GameMap[0][2] = 0
+        self.assertEqual(mainframe.get_neighbor(1, 1), 5, "error")
+        mainframe.GameMap[1][0] = 0
+        self.assertEqual(mainframe.get_neighbor(1, 1), 4, "error")
+        mainframe.GameMap[1][1] = 0
+        self.assertEqual(mainframe.get_neighbor(1, 1), 4, "error") #本格子设置为0.没有影响
+        mainframe.GameMap[1][2] = 0
+        self.assertEqual(mainframe.get_neighbor(1, 1), 3, "error")
+        mainframe.GameMap[2][0] = 0
+        self.assertEqual(mainframe.get_neighbor(1, 1), 2, "error")
+        mainframe.GameMap[2][1] = 0
+        self.assertEqual(mainframe.get_neighbor(1, 1), 1, "error")
+        mainframe.GameMap[2][2] = 0
+        self.assertEqual(mainframe.get_neighbor(1, 1), 0, "error")
 
     def test_change_status(self):
         mainframe = MainFrame(100, 100)
@@ -76,6 +102,18 @@ class GameTest(unittest.TestCase):
         mainframe.GameMap[1][1] = 1
         mainframe.change_status(1, 1)
         self.assertEqual(mainframe.NextMap[1][1], 1, "error")#不变
+
+        mainframe.GameMap[0][0] = 1
+        mainframe.GameMap[0][1] = 0
+        mainframe.GameMap[0][2] = 0
+        mainframe.GameMap[1][0] = 1
+        mainframe.GameMap[1][2] = 0
+        mainframe.GameMap[2][0] = 0
+        mainframe.GameMap[2][1] = 0
+        mainframe.GameMap[2][2] = 0
+        mainframe.GameMap[1][1] = 0
+        mainframe.change_status(1, 1)
+        self.assertEqual(mainframe.NextMap[1][1], 0, "error")  # 不变
 
     def test_next_phrase(self):
         mainframe = MainFrame(100,100)
