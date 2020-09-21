@@ -11,28 +11,28 @@ class GameTest(unittest.TestCase):
 
     # 测试游戏开始
     def test_start(self):
-        gui = GUI(10,10)
-        self.assertEqual(gui.start(),1,"error")
+        gui = GUI(10, 10)
+        self.assertEqual(gui.start(), 1, "error")
 
     # 测试游戏暂停
     def test_pause(self):
-        gui = GUI(10,10)
-        self.assertEqual(gui.pause(),0,"error")
+        gui = GUI(10, 10)
+        self.assertEqual(gui.pause(), 0, "error")
 
     # 测试GUI界面重置
     def test_resetgui(self):
-        gui = GUI(10,10)
+        gui = GUI(10, 10)
         for i in range(10):
             for j in range(10):
                 gui.frame.GameMap[i][j] = 1
         gui.reset()
         for i in range(10):
             for j in range(10):
-                self.assertEqual(gui.frame.GameMap[i][j],0,"error")
+                self.assertEqual(gui.frame.GameMap[i][j], 0, "error")
 
     # 测试获取单个细胞周围存活细胞数
     def test_getneighbor(self):
-        mainframe=MainFrame(100,100)
+        mainframe = MainFrame(100, 100)
         mainframe.GameMap[0][0] = 1
         mainframe.GameMap[0][1] = 1
         mainframe.GameMap[0][2] = 1
@@ -42,13 +42,13 @@ class GameTest(unittest.TestCase):
         mainframe.GameMap[2][0] = 1
         mainframe.GameMap[2][1] = 1
         mainframe.GameMap[2][2] = 1
-        #本格子以及周围格子设置为1
-        self.assertEqual(mainframe.get_neighbor(1,1),8,"error")
-        #检测周围或者数量是否为8
+        # 本格子以及周围格子设置为1
+        self.assertEqual(mainframe.get_neighbor(1, 1), 8, "error")
+        # 检测周围或者数量是否为8
 
         mainframe.GameMap[0][0] = 0
         self.assertEqual(mainframe.get_neighbor(1, 1), 7, "error")
-        #逐渐递减
+        # 逐渐递减
         mainframe.GameMap[0][1] = 0
         self.assertEqual(mainframe.get_neighbor(1, 1), 6, "error")
         mainframe.GameMap[0][2] = 0
@@ -56,7 +56,7 @@ class GameTest(unittest.TestCase):
         mainframe.GameMap[1][0] = 0
         self.assertEqual(mainframe.get_neighbor(1, 1), 4, "error")
         mainframe.GameMap[1][1] = 0
-        self.assertEqual(mainframe.get_neighbor(1, 1), 4, "error") #本格子设置为0.没有影响
+        self.assertEqual(mainframe.get_neighbor(1, 1), 4, "error")  # 本格子设置为0.没有影响
         mainframe.GameMap[1][2] = 0
         self.assertEqual(mainframe.get_neighbor(1, 1), 3, "error")
         mainframe.GameMap[2][0] = 0
@@ -78,7 +78,7 @@ class GameTest(unittest.TestCase):
         mainframe.GameMap[2][1] = 1
         mainframe.GameMap[2][2] = 1
         mainframe.change_status(1, 1)
-        self.assertEqual(mainframe.NextMap[1][1], 0, "error")#死亡
+        self.assertEqual(mainframe.NextMap[1][1], 0, "error")  # 死亡
 
         mainframe.GameMap[0][0] = 1
         mainframe.GameMap[0][1] = 1
@@ -89,7 +89,7 @@ class GameTest(unittest.TestCase):
         mainframe.GameMap[2][1] = 0
         mainframe.GameMap[2][2] = 0
         mainframe.change_status(1, 1)
-        self.assertEqual(mainframe.NextMap[1][1], 1, "error")#一定活
+        self.assertEqual(mainframe.NextMap[1][1], 1, "error")  # 一定活
 
         mainframe.GameMap[0][0] = 1
         mainframe.GameMap[0][1] = 0
@@ -101,7 +101,7 @@ class GameTest(unittest.TestCase):
         mainframe.GameMap[2][2] = 0
         mainframe.GameMap[1][1] = 1
         mainframe.change_status(1, 1)
-        self.assertEqual(mainframe.NextMap[1][1], 1, "error")#不变
+        self.assertEqual(mainframe.NextMap[1][1], 1, "error")  # 不变
 
         mainframe.GameMap[0][0] = 1
         mainframe.GameMap[0][1] = 0
@@ -124,12 +124,12 @@ class GameTest(unittest.TestCase):
         mainframe.GameMap[99][1] = 0
         mainframe.GameMap[0][1] = 1
         mainframe.GameMap[1][1] = 0
-        mainframe.change_status(0,0)
+        mainframe.change_status(0, 0)
         self.assertEqual(mainframe.NextMap[0][0], 1, "error")  # 不变
 
     # 测试全部细胞状态更新
     def test_next_phrase(self):
-        mainframe = MainFrame(100,100)
+        mainframe = MainFrame(100, 100)
         mainframe.GameMap[0][0] = 1
         mainframe.GameMap[0][1] = 1
         mainframe.GameMap[0][2] = 1
@@ -165,21 +165,20 @@ class GameTest(unittest.TestCase):
             for j in range(100):
                 self.assertEqual(mainframe.GameMap[i][j], 0, "error")
 
-
-
     def tearDown(self):
         print("tear down")
 
+
 if __name__ == '__main__':
-    suite=unittest.TestSuite()
+    suite = unittest.TestSuite()
 
-    suite.addTest(GameTest("test_start"))#测试游戏开始
-    suite.addTest(GameTest("test_pause"))#测试游戏暂停
-    suite.addTest(GameTest("test_getneighbor"))#测试 获取该方格周边存活数量
-    suite.addTest(GameTest("test_change_status"))#测试 改变该方格存活状态
-    suite.addTest(GameTest("test_next_phrase"))#测试 改变全部方格状态
-    suite.addTest(GameTest("test_reset")) #测试 重置内部数组
-    suite.addTest(GameTest("test_resetgui"))#测试 重置棋盘
+    suite.addTest(GameTest("test_start"))  # 测试游戏开始
+    suite.addTest(GameTest("test_pause"))  # 测试游戏暂停
+    suite.addTest(GameTest("test_getneighbor"))  # 测试 获取该方格周边存活数量
+    suite.addTest(GameTest("test_change_status"))  # 测试 改变该方格存活状态
+    suite.addTest(GameTest("test_next_phrase"))  # 测试 改变全部方格状态
+    suite.addTest(GameTest("test_reset"))  # 测试 重置内部数组
+    suite.addTest(GameTest("test_resetgui"))  # 测试 重置棋盘
 
-    runner=unittest.TextTestRunner()
+    runner = unittest.TextTestRunner()
     runner.run(suite)
