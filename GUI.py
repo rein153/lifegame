@@ -89,8 +89,8 @@ class GUI:
                         for i in range(len(self.positions)):
                             for j in range(len(self.positions[i])):
                                 rec = self.positions[i][j]
-                                if event.pos[0] >= rec[0] and event.pos[0] <= (rec[0] + 600 // self.frame.Row - 5) and \
-                                        event.pos[1] >= rec[1] and event.pos[1] <= (rec[1] + 600 // self.frame.Row - 5):
+                                if rec[0] <= event.pos[0] <= (rec[0] + 600 // self.frame.Row - 5) and \
+                                         rec[1] <= event.pos[1] <= (rec[1] + 600 // self.frame.Row - 5):
                                     self.frame.GameMap[i][j] = 1 ^ self.frame.GameMap[i][j]
                                     self.show()
                                     break
