@@ -109,7 +109,7 @@ class GUI:
 
 
 if __name__ == '__main__':
-    gui = GUI(30, 30)
+    gui = GUI(20, 30)
     gui.random_init()
     gui.mainloop()
 
